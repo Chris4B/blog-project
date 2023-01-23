@@ -17,16 +17,25 @@ Route::get('/', function () {
     return view('posts');
 });
 
-Route::get('posts/{post}', function ($slug) {
+//create a new route for the new folder html files "posts"
+
+Route::get('posts/{post}', function ($slug) { //create a wildcard {post}
+
+    
+    //build path
     $path = __DIR__ . "/../resources/posts/{$slug}.html";
 
+
+    //cehck if path exists and redirect if not
     if (!file_exists($path)) {
         redirect('/');
     }
 
-    $post = file_get_contents($path);
+    $post = file_get_contents($path);//render the file content from a given path into a string
 
     return view('post', [
-        'post' => $post
+        'post' => $post 
     ]);
+
+    //add constraint for security issues.
 })->where('post', '[A-z_\-]+');
