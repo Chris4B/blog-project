@@ -26,14 +26,19 @@ Route::get('posts/{post}', function ($slug) { //create a wildcard {post}
     $path = __DIR__ . "/../resources/posts/{$slug}.html";
 
 
-    //check if path exists and redirect if not
+    //checking if path exists and redirect if not
     if (!file_exists($path)) {
         redirect('/');
     }
 
-    // fetch the content of the file
-    $post = file_get_contents($path); //render the file content from a given path into a string
+    // sotring in memory during x time
+    $post = cache()->remember(
+        "posts.{$slug}",
+        5,
+        fn () => file_get_contents($path)
+    );
 
+    // returning the content to the view
     return view('post', [
         'post' => $post
     ]);
