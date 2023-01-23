@@ -21,20 +21,21 @@ Route::get('/', function () {
 
 Route::get('posts/{post}', function ($slug) { //create a wildcard {post}
 
-    
+
     //build path
     $path = __DIR__ . "/../resources/posts/{$slug}.html";
 
 
-    //cehck if path exists and redirect if not
+    //check if path exists and redirect if not
     if (!file_exists($path)) {
         redirect('/');
     }
 
-    $post = file_get_contents($path);//render the file content from a given path into a string
+    // fetch the content of the file
+    $post = file_get_contents($path); //render the file content from a given path into a string
 
     return view('post', [
-        'post' => $post 
+        'post' => $post
     ]);
 
     //add constraint for security issues.
